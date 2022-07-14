@@ -27,7 +27,7 @@ def run_the_game():
     game_control.set_player_comp_name(player_comp, player_hum)
     card_deck = game_control.get_cards_deck()
     game_control.make_start_moves(player_hum, player_comp, card_deck)
-    game_control.human_moves(player_hum, card_deck)
+    game_control.human_moves(player_hum, player_comp, card_deck)
     print(len(card_deck))
 
 

@@ -56,17 +56,20 @@ class GameControl(AbstractGame):
     @staticmethod
     def make_start_moves(player_hum, player_comp, card_deck):
         print("My cards")
-        player_comp.get_start_cards(card_deck)
-        player_comp.remove_cards_from_deck(card_deck)
+        player_comp.get_start_cards(card_deck, player_comp)
+        player_comp.get_start_cards(card_deck, player_comp)
         print(player_comp.player_cards)
         print("These cards your")
-        player_hum.get_start_cards(card_deck)
-        player_hum.remove_cards_from_deck(card_deck)
+        player_hum.get_start_cards(card_deck, player_hum)
+        player_hum.get_start_cards(card_deck, player_hum)
+        print(player_hum.player_cards)
         return card_deck
 
     @staticmethod
-    def human_moves(player_hum, card_deck):
+    def human_moves(player_hum, player_comp, card_deck):
         if player_hum.get_next_card(card_deck):
             player_hum.remove_cards_from_deck(card_deck)
+        if player_hum.player_move == 2:
+            player_comp.get_next_card(card_deck)
         return card_deck
 
