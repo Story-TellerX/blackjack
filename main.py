@@ -1,9 +1,9 @@
 from game import GameControl
-from player import AbstractPlayer
+from player import AbstractPlayer, HumanPlayer, ComputerPlayer
 from const import MESSAGE_HOW_START_STOP_GAME
 
 
-def check_for_start_game():
+def check_for_start_game() -> bool:
     i = 0
     while i < 1:
         input_player_choice = str(input("Have you really wanted to play with me?: "))
@@ -21,13 +21,14 @@ def check_for_start_game():
 
 def run_the_game():
     game_control = GameControl()
-    player_hum = game_control.create_players_human()
-    player_comp = game_control.create_players_comp()
+    player_hum = HumanPlayer()
+    player_comp = ComputerPlayer()
     game_control.get_player_name(player_hum)
     game_control.set_player_comp_name(player_comp, player_hum)
     card_deck = game_control.get_cards_deck()
-    game_control.make_start_moves(player_hum, player_comp, card_deck)
-    game_control.human_moves(player_hum, player_comp, card_deck)
+    game_control.make_start_moves(player_hum, player_comp)
+    game_control.human_moves(player_hum)
+    game_control.comp_moves(player_hum, player_comp)
     print(len(card_deck))
 
 

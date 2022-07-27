@@ -10,7 +10,7 @@ class CardDeck:
         self.diamonds = {}
         self.spades = {}
 
-    def _create_clubs(self):
+    def _create_clubs(self) -> dict:
         self.clubs = {
             "2-clubs": 2,
             "3-clubs": 3,
@@ -28,7 +28,7 @@ class CardDeck:
         }
         return self.clubs
 
-    def _create_hearts(self):
+    def _create_hearts(self) -> dict:
         self.hearts = {
             "2-hearts": 2,
             "3-hearts": 3,
@@ -46,7 +46,7 @@ class CardDeck:
         }
         return self.hearts
 
-    def _create_diamonds(self):
+    def _create_diamonds(self) -> dict:
         self.diamonds = {
             "2-diamonds": 2,
             "3-diamonds": 3,
@@ -64,7 +64,7 @@ class CardDeck:
         }
         return self.diamonds
 
-    def _create_spades(self):
+    def _create_spades(self) -> dict:
         self.spades = {
             "2-spades": 2,
             "3-spades": 3,
@@ -88,7 +88,7 @@ class Shuffle(CardDeck):
     def __init__(self):
         super(CardDeck).__init__()
 
-    def _create_list_card_deck(self):
+    def _create_list_card_deck(self) -> dict:
         card_deck_dict = {}
         clubs = self._create_clubs()
         card_deck_dict.update(clubs)
@@ -100,7 +100,7 @@ class Shuffle(CardDeck):
         card_deck_dict.update(spades)
         return card_deck_dict
 
-    def randomizer_for_cards_in_deck(self):
+    def randomizer_for_cards_in_deck(self) -> dict:
         get_card_deck_dict = self._create_list_card_deck()
         b = list(get_card_deck_dict.items())
         random.shuffle(b)
