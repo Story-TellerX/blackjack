@@ -79,8 +79,7 @@ class ComputerPlayer(AbstractPlayer, ABC):
         print(self.player_cards)
         return counter
 
-    def make_decision_to_take_card(self):
-        self.get_player_score()
+    def make_decision_to_take_card(self) -> bool:
         if self.player_score <= 12:
             return True
         elif 12 < self.player_score < 17:

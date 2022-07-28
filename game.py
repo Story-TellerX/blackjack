@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Optional
+from typing import Optional, Union
 
 from cards import Shuffle
 from const import MESSAGE_ADD_PLAYER_RULES, MESSAGE_ADD_PLAYER, MESSAGE_REJECT_ADDING_PLAYER
@@ -88,7 +88,7 @@ class GameControl(AbstractGame):
         do_hum_have_over21 = player_hum.player_score
         if do_hum_have_over21 > 21:
             return False
-        elif do_hum_have_over21 < 21:
+        elif do_hum_have_over21 <= 21:
             return True
 
     def get_next_card_for_comp(self, player_hum: HumanPlayer, player_comp: ComputerPlayer) -> int:
@@ -98,6 +98,7 @@ class GameControl(AbstractGame):
                 if player_comp.make_decision_to_take_card() is True:
                     print("I will take one more card")
                     player_comp.select_one_next_card(self.card_deck, counter)
+                    player_comp.get_player_score()
                     counter += 1
                 elif player_comp.make_decision_to_take_card() is False:
                     print("It is enough for me, I`m stop")
@@ -109,9 +110,21 @@ class GameControl(AbstractGame):
 
     def comp_moves(self, player_hum: HumanPlayer, player_comp: ComputerPlayer) -> dict:
         if player_hum.player_move == 2:
-            print("start comp moves")
             self.get_next_card_for_comp(player_hum, player_comp)
-            print("End comp moves")
             player_comp.remove_cards_from_deck(self.card_deck)
         return self.card_deck
+
+    @staticmethod
+    def how_is_the_winner(player_hum: HumanPlayer, player_comp: ComputerPlayer) -> Optional[bool]:
+        human_score = player_hum.get_player_score()
+        comp_score = player_comp.get_player_score()
+        print(f'The final result: My score is: {comp_score} and your score is: {human_score}, so...')
+        if comp_score > 21 and human_score > 21:
+            return None
+        elif human_score < comp_score <= 21:
+            return False
+        elif comp_score < human_score <= 21:
+            return True
+        elif comp_score == human_score:
+            return None
 
