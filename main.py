@@ -1,3 +1,4 @@
+import abc
 from typing import Optional, Union
 
 from game import GameControl
@@ -51,10 +52,8 @@ def run_the_game():
 
 
 if __name__ == "__main__":
-    choice_to_pLay = 'y'
-    while choice_to_pLay:
+    while True:
         print(MESSAGE_HOW_START_STOP_GAME)
-        if check_for_start_game():
-            run_the_game()
-        else:
+        if not check_for_start_game():
             break
+        run_the_game()
