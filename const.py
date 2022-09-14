@@ -1,5 +1,7 @@
 MESSAGE_HOW_START_STOP_GAME = "Please neter Y to play and N to stop game"
 
+INPUT_NOT_VALID = "Please use - Y or N only"
+
 MESSAGE_ADD_PLAYER = "You want more participants in our epic battle?"
 
 MESSAGE_ADD_PLAYER_RULES = "Please enter 0 to play one on one" \

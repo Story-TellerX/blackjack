@@ -93,14 +93,14 @@ class GameControl(AbstractGame):
 
     def get_next_card_for_comp(self, player_hum: HumanPlayer, player_comp: ComputerPlayer) -> int:
         counter = 0
-        while self.do_comp_need_a_make_move_in_general(player_hum) is True:
+        while self.do_comp_need_a_make_move_in_general(player_hum):
             if player_comp.check_for_score():
-                if player_comp.make_decision_to_take_card() is True:
+                if player_comp.make_decision_to_take_card():
                     print("I will take one more card")
                     player_comp.select_one_next_card(self.card_deck, counter)
                     player_comp.get_player_score()
                     counter += 1
-                elif player_comp.make_decision_to_take_card() is False:
+                elif not player_comp.make_decision_to_take_card():
                     print("It is enough for me, I`m stop")
                     break
             else:
