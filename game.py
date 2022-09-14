@@ -71,8 +71,8 @@ class GameControl(AbstractGame):
 
     def get_next_card(self, player_hum: HumanPlayer) -> int:
         counter = 0
-        while player_hum.ask_player_for_next_card(self.card_deck, counter):
-            if player_hum.ask_player_for_next_card is False:
+        while True:
+            if not player_hum.ask_player_for_next_card(self.card_deck, counter):
                 break
             counter += 1
         player_hum.player_move = 2

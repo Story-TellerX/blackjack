@@ -1,17 +1,10 @@
-from abc import ABC
-from typing import Optional, Dict, Any
+import abc
 
 from const import (
-    #     MESSAGE_ADD_PLAYER,
-    #     MESSAGE_REJECT_ADDING_PLAYER,
-    #     MESSAGE_ADD_PLAYER_RULES,
-    #     MESSAGE_SELECT_TYPE_OF_PLAYER,
-    #     MESSAGE_SELECT_PLAYER_TYPE_RULES,
-    #     MESSAGE_REJECT_SELECT_PLAYER_HUMAN_TYPE,
-    #     MESSAGE_ACCEPT_HUMAN_PLAYER,
-    MESSAGE_TO_GET_CARD_STOP_GETTING
+    GREETING_PLAYER_TEXT,
+    MESSAGE_TO_GET_CARD_STOP_GETTING,
+    INPUT_NOT_VALID,
 )
-import abc
 
 
 class AbstractPlayer:
@@ -25,18 +18,18 @@ class AbstractPlayer:
 
     @abc.abstractmethod
     def get_next_card(self):
-        pass
+        raise NotImplemented
 
     @abc.abstractmethod
     def get_player_score(self):
-        pass
+        raise NotImplemented
 
     @abc.abstractmethod
     def greeting_player(self):
-        pass
+        raise NotImplemented
 
 
-class ComputerPlayer(AbstractPlayer, ABC):
+class ComputerPlayer(AbstractPlayer, abc.ABC):
 
     def __init__(self):
         super().__init__()
@@ -60,14 +53,14 @@ class ComputerPlayer(AbstractPlayer, ABC):
         print(f'It is my score: {self.player_score}')
         return self.player_score
 
-    def check_for_score(self) -> Optional[bool]:
+    def check_for_score(self) -> bool:
         if self.player_score <= 21:
             return True
         elif self.player_score > 21:
             print("Oh-hh IS TOO MUCH")
             return False
         else:
-            return None
+            print("Some strange score")
 
     def select_one_next_card(self, card_deck: dict, counter: int) -> int:
         cards = {}
@@ -88,13 +81,13 @@ class ComputerPlayer(AbstractPlayer, ABC):
             return False
 
 
-class HumanPlayer(AbstractPlayer, ABC):
+class HumanPlayer(AbstractPlayer, abc.ABC):
 
     def __init__(self):
         super().__init__()
 
     def greeting_player(self) -> None:
-        return print("The game will show if you are worthy of such a name {}".format(self.player_name))
+        return print(f'{GREETING_PLAYER_TEXT} - {self.player_name}')
 
     def remove_cards_from_deck(self, card_deck: dict) -> dict:
         if self.player_cards != {}:
@@ -113,15 +106,16 @@ class HumanPlayer(AbstractPlayer, ABC):
         self.player_score = sum(cards_score)
         return self.player_score
 
-    def _check_for_score(self) -> Optional[bool]:
+    def _check_for_score(self) -> bool:
         if self.player_score <= 21:
             return True
         elif self.player_score > 21:
             print("Sorry IS TOO MUCH")
             print("I knew you would lose. The human brain cannot compete with mine.")
+            print(f'Your score is: {self.player_score}')
             return False
         else:
-            return None
+            print("Some strange score")
 
     def _select_one_next_card(self, card_deck: dict, counter: int) -> None:
         cards = {}
@@ -132,26 +126,46 @@ class HumanPlayer(AbstractPlayer, ABC):
         self.player_cards.update(cards)
         print(self.player_cards)
 
-    def ask_player_for_next_card(self, card_deck: dict,  counter: int) -> Optional[bool]:
-        player_input = str(input(MESSAGE_TO_GET_CARD_STOP_GETTING))
+    def ask_player_for_next_card(self, card_deck: dict, counter: int) -> bool:
+        while True:
+            if not self._check_for_score():
+                break
+            player_input = str(input(MESSAGE_TO_GET_CARD_STOP_GETTING))
+            if not self._check_for_hum_answer_for_next_card(player_input, card_deck, counter):
+                break
+            return True
 
+        # if player_input.lower() == 'y':
+        #     self._select_one_next_card(card_deck, counter)
+        #     self.get_player_score()
+        #     if self._check_for_score() is False:
+        #         self.get_player_score()
+        #         print(f'Your score is: {self.player_score}')
+        #         return False
+        #     elif self._check_for_score():
+        #         self.get_player_score()
+        #         print(f'Your score is: {self.player_score}')
+        #         counter += 1
+        #         return True
+        # elif player_input.lower() == 'n':
+        #     self.get_player_score()
+        #     print(f'Your stopped and your score is: {self.player_score}')
+        #     return False
+        # elif player_input.lower() != 'y' and player_input.lower() != 'stop':
+        #     print("Please use only y or stop")
+        # else:
+        #     return None
+
+    def _check_for_hum_answer_for_next_card(self, player_input: str, card_deck: dict, counter: int) -> bool:
         if player_input.lower() == 'y':
             self._select_one_next_card(card_deck, counter)
             self.get_player_score()
-            if self._check_for_score() is False:
-                self.get_player_score()
-                print(f'Your score is: {self.player_score}')
-                return False
-            elif self._check_for_score():
-                self.get_player_score()
-                print(f'Your score is: {self.player_score}')
-                counter += 1
-                return True
-        elif player_input.lower() == 'stop':
+            print(f"Your score is {self.player_score} now")
+            return True
+        elif player_input.lower() == 'n':
             self.get_player_score()
             print(f'Your stopped and your score is: {self.player_score}')
             return False
-        elif player_input.lower() != 'y' and player_input.lower() != 'stop':
-            print("Please use only y or stop")
         else:
-            return None
+            print(INPUT_NOT_VALID)
+            return True

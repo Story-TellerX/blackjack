@@ -1,6 +1,8 @@
-MESSAGE_HOW_START_STOP_GAME = "Please neter Y to play and N to stop game"
+MESSAGE_HOW_START_STOP_GAME = "Please enter Y to play and N to stop game"
 
 INPUT_NOT_VALID = "Please use - Y or N only"
+
+GREETING_PLAYER_TEXT = "the game will show if you are worthy of such a name"
 
 MESSAGE_ADD_PLAYER = "You want more participants in our epic battle?"
 
@@ -18,4 +20,4 @@ MESSAGE_SELECT_PLAYER_TYPE_RULES = "Please enter 1 to add human player and 2 to 
 
 MESSAGE_REJECT_SELECT_PLAYER_HUMAN_TYPE = "HAHA two supercomputers can easily deal with you"
 
-MESSAGE_TO_GET_CARD_STOP_GETTING = 'Do you want to take another card, or is it enough? y/stop:'
+MESSAGE_TO_GET_CARD_STOP_GETTING = 'Do you want to take another card, or is it enough? y/n:'
