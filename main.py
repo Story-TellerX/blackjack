@@ -1,9 +1,6 @@
-import abc
-from typing import Optional, Union
-
 from game import GameControl
-from player import AbstractPlayer, HumanPlayer, ComputerPlayer
-from const import MESSAGE_HOW_START_STOP_GAME
+from player import HumanPlayer, ComputerPlayer
+from const import MESSAGE_HOW_START_STOP_GAME, INPUT_NOT_VALID
 
 
 def check_for_start_game() -> bool:
@@ -11,15 +8,12 @@ def check_for_start_game() -> bool:
     while i < 1:
         input_player_choice = str(input("Have you really wanted to play with me?: "))
         if input_player_choice.lower() == 'n':
-            break
-        elif input_player_choice.lower() != 'y' and input_player_choice.lower() != 'n':
-            print("Please enter only Y or N")
-            i = 0
+            return False
         elif input_player_choice.lower() == 'y':
             i = 1
             return True
         else:
-            raise ValueError
+            print(INPUT_NOT_VALID)
 
 
 def how_is_the_winner(game_control: GameControl, player_hum: HumanPlayer, player_comp: ComputerPlayer) -> None:
