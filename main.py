@@ -1,22 +1,18 @@
 from const import MESSAGE_HOW_START_STOP_GAME, INPUT_NOT_VALID
+from game_v2 import GameControl
 
 
 def run_the_game():
-    # game_control = GameControl()
-    # player_hum = HumanPlayer()
-    # player_comp = ComputerPlayer()
-    #
-    # game_control.get_player_name(player_hum)
-    # game_control.set_player_comp_name(player_comp, player_hum)
-    # card_deck = game_control.get_cards_deck()
-    #
-    # game_control.make_start_moves(player_hum, player_comp)
-    # game_control.human_moves(player_hum)
-    # game_control.comp_moves(player_hum, player_comp)
-    #
-    # how_is_the_winner(game_control, player_hum, player_comp)
-    # print(len(card_deck))
-    ...
+    game_control = GameControl()
+
+    game_control.get_players_name()
+    game_control.get_card_deck()
+
+    game_control.starts_moves_to_take_2_cards()
+    game_control.get_next_human_moves()
+    game_control.get_next_comp_moves()
+
+    game_control.how_is_the_winner_message()
 
 
 def check_for_start_game() -> bool:
