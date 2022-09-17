@@ -1,9 +1,9 @@
 from abc import ABC
 from typing import Optional, Union
 
-from cards import Shuffle
+from cards_old import Shuffle
 from const import MESSAGE_ADD_PLAYER_RULES, MESSAGE_ADD_PLAYER, MESSAGE_REJECT_ADDING_PLAYER
-from player import ComputerPlayer, HumanPlayer
+from player_old import ComputerPlayer, HumanPlayer
 
 
 class AbstractGame(ABC):
@@ -50,7 +50,8 @@ class GameControl(AbstractGame):
                     cards[card] = card_value
                     object_in_list.player_cards.update(cards)
                     counter += 1
-        object_in_list.remove_cards_from_deck(self.card_deck)
+            for last_received_card in object_in_list.player_cards.keys():
+                object_in_list.remove_cards_from_deck(self.card_deck, last_received_card)
         return self.card_deck
 
     def _get_start_cards(self, player_comp: ComputerPlayer, player_hum: HumanPlayer) -> dict:
@@ -80,7 +81,8 @@ class GameControl(AbstractGame):
 
     def human_moves(self, player_hum: HumanPlayer) -> dict:
         if self.get_next_card(player_hum):
-            player_hum.remove_cards_from_deck(self.card_deck)
+            last_received_card = list(player_hum.player_cards.keys())[-1]
+            player_hum.remove_cards_from_deck(self.card_deck, last_received_card)
         return self.card_deck
 
     @staticmethod
@@ -111,7 +113,8 @@ class GameControl(AbstractGame):
     def comp_moves(self, player_hum: HumanPlayer, player_comp: ComputerPlayer) -> dict:
         if player_hum.player_move == 2:
             self.get_next_card_for_comp(player_hum, player_comp)
-            player_comp.remove_cards_from_deck(self.card_deck)
+            last_received_card = list(player_hum.player_cards.keys())[-1]
+            player_comp.remove_cards_from_deck(self.card_deck, last_received_card)
         return self.card_deck
 
     @staticmethod

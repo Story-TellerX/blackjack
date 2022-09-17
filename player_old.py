@@ -35,13 +35,14 @@ class ComputerPlayer(AbstractPlayer, abc.ABC):
         super().__init__()
         self.player_human_score = 0
 
-    def remove_cards_from_deck(self, card_deck: dict) -> dict:
-        if self.player_cards != {}:
-            for i in self.player_cards.keys():
-                try:
-                    card_deck.pop(i)
-                except KeyError:
-                    pass
+    def remove_cards_from_deck(self, card_deck: dict, last_received_card: str) -> dict:
+        if self.player_cards:
+            card_deck.pop(last_received_card)
+            # for i in self.player_cards.keys():
+            #     try:
+            #         card_deck.pop(i)
+            #     except KeyError:
+            #         pass
         return card_deck
 
     def get_player_score(self) -> int:
@@ -89,13 +90,14 @@ class HumanPlayer(AbstractPlayer, abc.ABC):
     def greeting_player(self) -> None:
         return print(f'{GREETING_PLAYER_TEXT} - {self.player_name}')
 
-    def remove_cards_from_deck(self, card_deck: dict) -> dict:
-        if self.player_cards != {}:
-            for i in self.player_cards.keys():
-                try:
-                    card_deck.pop(i)
-                except KeyError:
-                    pass
+    def remove_cards_from_deck(self, card_deck: dict, last_received_card: str) -> dict:
+        if self.player_cards:
+            card_deck.pop(last_received_card)
+            # for i in self.player_cards.keys():
+            #     try:
+            #         card_deck.pop(i)
+            #     except KeyError:
+            #         pass
         return card_deck
 
     def get_player_score(self) -> int:
@@ -134,27 +136,6 @@ class HumanPlayer(AbstractPlayer, abc.ABC):
             if not self._check_for_hum_answer_for_next_card(player_input, card_deck, counter):
                 break
             return True
-
-        # if player_input.lower() == 'y':
-        #     self._select_one_next_card(card_deck, counter)
-        #     self.get_player_score()
-        #     if self._check_for_score() is False:
-        #         self.get_player_score()
-        #         print(f'Your score is: {self.player_score}')
-        #         return False
-        #     elif self._check_for_score():
-        #         self.get_player_score()
-        #         print(f'Your score is: {self.player_score}')
-        #         counter += 1
-        #         return True
-        # elif player_input.lower() == 'n':
-        #     self.get_player_score()
-        #     print(f'Your stopped and your score is: {self.player_score}')
-        #     return False
-        # elif player_input.lower() != 'y' and player_input.lower() != 'stop':
-        #     print("Please use only y or stop")
-        # else:
-        #     return None
 
     def _check_for_hum_answer_for_next_card(self, player_input: str, card_deck: dict, counter: int) -> bool:
         if player_input.lower() == 'y':
