@@ -1,4 +1,5 @@
 from card_v2 import CardDeckShuffle
+from const import WINNER_MESSAGE_FOR_COMP, GREETING_PLAYER_TEXT, COMP_NAME_INTRODUCTION
 from player_v2 import HumanPlayer, ComputerPlayer
 
 
@@ -12,8 +13,10 @@ class GameControl:
 
     def get_players_name(self) -> None:
         player_name_input = str(input("How can I call you protein man: "))
+        print(f"{GREETING_PLAYER_TEXT} {player_name_input}")
         self.player_human.player_name = player_name_input
-        self.player_comp.player_name = "You can call me Blender"
+        self.player_comp.player_name = "Blender"
+        print(f"{COMP_NAME_INTRODUCTION} {self.player_comp.player_name}")
 
     def get_card_deck(self) -> None:
         card_deck_for_play = CardDeckShuffle().create_a_card_deck_for_game()
@@ -32,40 +35,32 @@ class GameControl:
         print(self.player_comp.player_card)
         print(f'This is my score: {self.player_comp.player_score}')
 
-    def get_next_human_moves(self) -> None:
-        print("So take your moves")
+    def player_make_next_move(self):
+        list_of_players = [self.player_human, self.player_comp]
+        for player in list_of_players:
+            if player is self.player_human:
+                print("Make your move...")
+            else:
+                print("My turn")
+            self._make_player_move(player)
+
+    def _make_player_move(self, player):
         while True:
-            if not self.player_human.check_player_score():
+            if not player.check_player_score():
                 print("SORRY THIS IS TOO MUCH")
                 break
-            if not self.player_human.ask_about_one_more_card():
-                print(f"You are stopped and your score is: {self.player_human.player_score}")
+            if not player.ask_about_one_more_card():
+                print(f"So, score is: {player.player_score}")
                 break
-            self.player_human.get_new_card(self.card_deck)
-            print(self.player_human.player_card)
-            print(f'This is your new score: {self.player_human.player_score}')
-
-    def get_next_comp_moves(self) -> None:
-        print("So is is my turn")
-        while True:
-            if not self.player_comp.check_player_score():
-                print("OH NO, THIS IS TOO MUCH!!!")
-                break
-            if not self.player_comp.ask_about_one_more_card():
-                print("It is enough for me, I`m stop")
-                print(f"and my score is: {self.player_comp.player_score}")
-                break
-            self.player_comp.get_new_card(self.card_deck)
-            print(self.player_comp.player_card)
-            print(f'This is my new score: {self.player_comp.player_score}')
+            player.get_new_card(self.card_deck)
+            print(player.player_card)
+            print(f'This is new score: {player.player_score}')
 
     def _how_is_the_winner(self) -> bool | None:
         comp_score = self.player_comp.player_score
         human_score = self.player_human.player_score
         print(f'The final result: My score is: {comp_score}'
               f' and your score is: {human_score}, so...')
-        # if comp_score > 21 and human_score > 21:
-        #     print("no one winner here... Make one more round!")
         if human_score < comp_score <= 21:
             return False
         elif comp_score < human_score <= 21:
@@ -75,13 +70,10 @@ class GameControl:
 
     def how_is_the_winner_message(self):
         result = self._how_is_the_winner()
-        print(result)
         if result:
             print("Oh no it is impossible - YOU ARE WINNER")
         elif not result:
-            print("I knew you would lose. The human brain cannot compete with mine.")
-            print("I`m Blender most powerfully robot mind. I`M WINNER")
-            print('I`m gonna build my own thing party with blackjack and hook...')
+            print(WINNER_MESSAGE_FOR_COMP)
         elif result is None:
             print("no one winner here... Make one more round!")
         else:
