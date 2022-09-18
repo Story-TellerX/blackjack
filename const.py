@@ -12,6 +12,14 @@ WINNER_MESSAGE_FOR_COMP = """
             I`m gonna build my own thing party with blackjack and hook...
 """
 
+WINNER_MESSAGE_FOR_HUMAN = """
+            Oh no it is impossible - YOU ARE WINNER
+"""
+
+MESSAGE_FOR_DRAW = """
+            no one winner here... Make one more round!
+"""
+
 COMP_NAME_INTRODUCTION = "You can call me"
 
 CARD_DECK = {

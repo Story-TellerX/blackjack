@@ -1,5 +1,11 @@
 from card_v2 import CardDeckShuffle
-from const import WINNER_MESSAGE_FOR_COMP, GREETING_PLAYER_TEXT, COMP_NAME_INTRODUCTION
+from const import (
+    WINNER_MESSAGE_FOR_COMP,
+    GREETING_PLAYER_TEXT,
+    COMP_NAME_INTRODUCTION,
+    WINNER_MESSAGE_FOR_HUMAN,
+    MESSAGE_FOR_DRAW,
+)
 from player_v2 import HumanPlayer, ComputerPlayer
 
 
@@ -35,26 +41,25 @@ class GameControl:
         print(self.player_comp.player_card)
         print(f'This is my score: {self.player_comp.player_score}')
 
-    def player_make_next_move(self):
-        list_of_players = [self.player_human, self.player_comp]
-        for player in list_of_players:
-            if player is self.player_human:
-                print("Make your move...")
-            else:
-                print("My turn")
-            self._make_player_move(player)
+    def _make_decision_for_comp_to_take_move(self):
+        comp_score = self.player_comp.player_score
+        human_score = self.player_human.player_score
+        if human_score < comp_score <= 21:
+            return False
+        elif comp_score < human_score <= 21:
+            return True
+        elif human_score <= 21 < comp_score:
+            return False
+        elif comp_score <= 21 < human_score:
+            return False
+        else:
+            return None
 
-    def _make_player_move(self, player):
-        while True:
-            if not player.check_player_score():
-                print("SORRY THIS IS TOO MUCH")
-                break
-            if not player.ask_about_one_more_card():
-                print(f"So, score is: {player.player_score}")
-                break
-            player.get_new_card(self.card_deck)
-            print(player.player_card)
-            print(f'This is new score: {player.player_score}')
+    def players_making_next_moves(self):
+        self.player_human.make_next_moves(self.card_deck)
+        if self._make_decision_for_comp_to_take_move():
+            self.player_comp.make_next_moves(self.card_deck)
+        print("It is look like you do need any move....")
 
     def _how_is_the_winner(self) -> bool | None:
         comp_score = self.player_comp.player_score
@@ -65,16 +70,20 @@ class GameControl:
             return False
         elif comp_score < human_score <= 21:
             return True
+        elif human_score <= 21 < comp_score:
+            return True
+        elif comp_score <= 21 < human_score:
+            return False
         else:
             return None
 
     def how_is_the_winner_message(self):
         result = self._how_is_the_winner()
         if result:
-            print("Oh no it is impossible - YOU ARE WINNER")
+            print(WINNER_MESSAGE_FOR_HUMAN)
         elif not result:
             print(WINNER_MESSAGE_FOR_COMP)
         elif result is None:
-            print("no one winner here... Make one more round!")
+            print(MESSAGE_FOR_DRAW)
         else:
             print("Some strange/////")

@@ -10,7 +10,7 @@ def run_the_game():
 
     game_control.starts_moves_to_take_2_cards()
 
-    game_control.player_make_next_move()
+    game_control.players_making_next_moves()
     game_control.how_is_the_winner_message()
 
 

@@ -19,7 +19,11 @@ class AbstractPlayer(abc.ABC):
         raise NotImplemented
 
     @abc.abstractmethod
-    def ask_about_one_more_card(self):
+    def _ask_about_one_more_card(self):
+        raise NotImplemented
+
+    @abc.abstractmethod
+    def make_next_moves(self):
         raise NotImplemented
 
 
@@ -51,15 +55,30 @@ class HumanPlayer(AbstractPlayer, ABC):
         else:
             return False
 
-    def ask_about_one_more_card(self):
-        human_input = str(input(f'{MESSAGE_TO_GET_CARD_STOP_GETTING}'))
-        if human_input.lower() == 'n':
-            return False
-        elif human_input.lower() == 'y':
-            print("You take new card")
-            return True
-        else:
-            print(INPUT_NOT_VALID)
+    def _ask_about_one_more_card(self):
+        i = 0
+        while i < 1:
+            human_input = str(input(f'{MESSAGE_TO_GET_CARD_STOP_GETTING}'))
+            if human_input.lower() == 'n':
+                return False
+            elif human_input.lower() == 'y':
+                i = 1
+                return True
+            else:
+                print(INPUT_NOT_VALID)
+
+    def make_next_moves(self, card_deck=None):
+        print("Your move...")
+        while True:
+            if not self.check_player_score():
+                print("SORRY THIS IS TOO MUCH")
+                break
+            if not self._ask_about_one_more_card():
+                print(f"You are stopped and your score is: {self.player_score}")
+                break
+            self.get_new_card(card_deck)
+            print(self.player_card)
+            print(f'This is your new score: {self.player_score}')
 
 
 class ComputerPlayer(AbstractPlayer, ABC):
@@ -90,7 +109,7 @@ class ComputerPlayer(AbstractPlayer, ABC):
         else:
             return False
 
-    def ask_about_one_more_card(self):
+    def _ask_about_one_more_card(self):
         if self.player_score <= 12:
             print("I will take one more card")
             return True
@@ -99,3 +118,16 @@ class ComputerPlayer(AbstractPlayer, ABC):
             return True
         elif self.player_score >= 17:
             return False
+
+    def make_next_moves(self, card_deck=None):
+        print("Now is my turn...")
+        while True:
+            if not self.check_player_score():
+                print("OH NO, THIS IS TOO MUCH")
+                break
+            if not self._ask_about_one_more_card():
+                print(f"I will stop and my score is: {self.player_score}")
+                break
+            self.get_new_card(card_deck)
+            print(self.player_card)
+            print(f'This is my score: {self.player_score}')
