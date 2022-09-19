@@ -59,7 +59,7 @@ class GameControl:
         self.player_human.make_next_moves(self.card_deck)
         if self._make_decision_for_comp_to_take_move():
             self.player_comp.make_next_moves(self.card_deck)
-        print("It is look like you do need any move....")
+        print("It is look like you did all for me, I do not need any move....")
 
     def _how_is_the_winner(self) -> bool | None:
         comp_score = self.player_comp.player_score
@@ -74,6 +74,8 @@ class GameControl:
             return True
         elif comp_score <= 21 < human_score:
             return False
+        elif comp_score == human_score:
+            return None
         else:
             return None
 
